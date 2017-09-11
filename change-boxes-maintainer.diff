@@ -1,0 +1,70 @@
+Only in .: .DS_Store
+Only in .: .git
+Only in .: .gitignore
+diff -u /opt/local/var/macports/sources/rsync.macports.org/release/tarballs/ports/textproc/boxes/Portfile ./Portfile
+--- /opt/local/var/macports/sources/rsync.macports.org/release/tarballs/ports/textproc/boxes/Portfile	2017-08-22 23:15:10.000000000 +0200
++++ ./Portfile	2017-09-11 15:34:21.000000000 +0200
+@@ -3,11 +3,11 @@
+ PortSystem              1.0
+ 
+ name                    boxes
+-version                 1.1.1
++version                 1.2
+ categories              textproc
+ license                 GPL-2+
+ platforms               darwin
+-maintainers             nomaintainer
++maintainers             @StefKKK openmaintainer
+ 
+ description             draws boxes around text
+ long_description        boxes is a text filter which can draw various \
+@@ -16,14 +16,13 @@
+                         simplifies using boxes from emacs
+ 
+ homepage                http://boxes.thomasjensen.com
+-master_sites            http://boxes.thomasjensen.com/download/
+-extract.suffix          .src.tar.gz
++master_sites            https://github.com/ascii-boxes/boxes/archive
++extract.suffix          .tar.gz
++distfiles               v${version}${extract.suffix}
++license                 GPL-2
+ 
+-checksums               rmd160  0a3a826382b174e0604a32071f5b6510fc4f5343 \
+-                        sha256  d8529840281618e75a4adf313f08291b89c8cf83928c2c1f4b0ddcd236fb2420
+-
+-patchfiles              config.h.patch boxes.c.patch parser.patch regerror.patch \
+-                        regexp_Makefile.patch tools.c.patch
++checksums               rmd160  f1d52f086bb273d044f3355b414c7186f0e359e1 \
++                        sha256  ba237f6d4936bdace133d5f370674fd4c63bf0d767999a104bada6460c5d1913
+ 
+ depends_build           port:bison port:cctools port:flex
+ 
+@@ -36,10 +35,8 @@
+     }
+ }
+ 
+-# Should this be installed in ${prefix}/share/boxes/boxes?
+-post-patch { reinplace "s|GLOBALCONF = /usr/share/boxes|GLOBALCONF = ${prefix}/share/boxes|" "${worksrcpath}/Makefile" }
+ build.target
+-build.args              CC=${configure.cc}
++build.args              CC=${configure.cc} GLOBALCONF=${prefix}/share/boxes
+ 
+ destroot {
+     xinstall -m 755 ${worksrcpath}/src/boxes ${destroot}${prefix}/bin/${name}
+@@ -47,10 +44,9 @@
+     xinstall -m 644 ${worksrcpath}/boxes ${destroot}${prefix}/share/${name}
+     xinstall ${worksrcpath}/doc/boxes.1 ${destroot}${prefix}/share/man/man1/
+     xinstall -m 755 -d ${destroot}${prefix}/share/doc/${name}
+-    xinstall -m 644 -W ${worksrcpath} COPYING README boxes-config ${destroot}${prefix}/share/doc/${name}
++    xinstall -m 644 -W ${worksrcpath} README.md LICENSE boxes-config ${destroot}${prefix}/share/doc/${name}
+ }
+ 
+ livecheck.type          regex
+-livecheck.url           [lindex ${master_sites} 0]
+-livecheck.regex         ${name}-(\[0-9.\]+)${extract.suffix}
+-
++livecheck.url           https://github.com/ascii-boxes/boxes/releases
++livecheck.regex         [join [list {v([0-9]+(\.[0-9]+)*)} [string map {. \\.} ${extract.suffix}]] ""]
+Only in .: README.md
+Only in .: change-boxes-maintainer.diff
+Only in /opt/local/var/macports/sources/rsync.macports.org/release/tarballs/ports/textproc/boxes: files
