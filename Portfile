@@ -4,10 +4,6 @@ PortSystem              1.0
 PortGroup               github 1.0
 
 github.setup            ascii-boxes boxes 1.2 v
-github.master_sites     https://github.com/ascii-boxes/boxes/archive ;# can't use git.tarball_from as it's no default download url
-
-# can't use regex provided from GitHub portgroup as distfiles are different
-livecheck.regex         [join [list {v([0-9]+(\.[0-9]+)*)} [string map {. \\.} ${extract.suffix}]] ""]
 
 categories              textproc
 license                 GPL-2+
@@ -23,10 +19,10 @@ long_description        boxes is a text filter which can draw various \
 homepage                http://boxes.thomasjensen.com
 license                 GPL-2
 
-checksums               rmd160  f1d52f086bb273d044f3355b414c7186f0e359e1 \
-                        sha256  ba237f6d4936bdace133d5f370674fd4c63bf0d767999a104bada6460c5d1913
+checksums               rmd160  f175439db5e62f348321790b53e67b3b075aef11 \
+                        sha256  13af290ceab5eccfc54f9e230a70c8f2a1ade3fbe64b8e59a60f52e0cf5877f1
 
-depends_build           port:bison port:cctools port:flex
+depends_build-append    port:bison port:cctools port:flex
 
 use_configure           no
 
@@ -48,3 +44,6 @@ destroot {
     xinstall -m 755 -d ${destroot}${prefix}/share/doc/${name}
     xinstall -m 644 -W ${worksrcpath} README.md LICENSE boxes-config ${destroot}${prefix}/share/doc/${name}
 }
+
+# can't use regex provided from GitHub portgroup as distfiles are different
+livecheck.regex         [join [list {v([0-9]+(\.[0-9]+)*)} [string map {. \\.} ${extract.suffix}]] ""]
